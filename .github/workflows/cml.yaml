@@ -1,0 +1,58 @@
+name: Unified Model Training
+on: [push]
+jobs:
+  train-and-report:
+    runs-on: ubuntu-latest
+    permissions: { contents: read, pull-request: write, issues: write }
+    steps:
+      - uses: actions/checkout@v3
+      - uses: iterative/setup-cml@v1
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+
+      - name: Train All Models
+        env: { REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }} }
+        run: |
+          # 1. Train Loan Model
+          python -m src.loan.pipeline.train_pipeline > loan_output.txt
+
+          # 2. Train Insurance Model
+          python -m src.insurance.pipeline.train_pipeline . insurance_output.txt
+
+          # --- Create Unified CML Report ---
+          echo "# 🚀 Portfolio Training Report" > report.md
+          
+          echo "## 💰 Loan Approval Model" >> report.md
+          tail -n 5 loan_output.txt >> report.md
+          
+          echo "## 🏥 Medical Insurance Model" >> report.md
+          tail -n 5 insurance_output.txt >> report.md
+          
+          # Post the comment to GitHub
+          cml comment create report.md
+
+      - name: Train and Save
+        env: { REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }} }
+        run: |
+          # 1. Run your training (this creates the .pkl files in artifacts/)
+          python -m src.loan.pipeline.train_pipeline > loan_output.txt
+          python -m src.insurance.pipeline.train_pipeline > insurance_output.txt
+
+          # 2. CML Report (optional: you can mention the files here)
+          echo "## Model Artifacts" >> report.md
+          echo "Models successfully saved to artifacts/ folder." >> report.md
+          cml comment create report.md
+
+          # 3. THE CRITICAL PART: Git commands to save the .pkl files
+          git config --local user.email "github-actions[bot]@://github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Use -f because your .gitignore probably blocks .pkl files
+          git add -f artifacts/loan/*.pkl
+          git add -f artifacts/insurance/*.pkl
+          
+          git commit -m "Automated model update [skip ci]" || echo "No changes"
+          git push
