@@ -3,8 +3,10 @@ on: [push]
 jobs:
   train-and-report:
     runs-on: ubuntu-latest
-    # Added 'contents: write' so it can push the .pkl files back to your repo
-    permissions: { contents: write, pull-request: write, issues: write }
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
     steps:
       - uses: actions/checkout@v3
       
@@ -36,7 +38,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           
-          # Force add the models (bypasses .gitignore)
+          # Force add the models
           git add -f artifacts/loan/*.pkl
           git add -f artifacts/insurance/*.pkl
           
