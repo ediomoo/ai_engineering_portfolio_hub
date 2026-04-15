@@ -10,28 +10,30 @@ from src.insurance.components.data_transformation import DataTransformation
 class ModelTrainer:
     def __init__(self):
         self.model_path = os.path.join("artifacts", "insurance", "model.pkl")
+        
+        # FIX: Standardize MLflow tracking for GitHub Actions/SQLite
+        db_path = os.path.abspath("mlflow.db")
+        mlflow.set_tracking_uri(f"sqlite:///{db_path}")
+        mlflow.set_experiment("Insurance_Training")
 
     def initiate_model_trainer(self, train_arr, test_arr):
         """
         Trains the XGBoost model, logs to MLflow, and saves the model artifact.
         """
         try:
-            # 1. Split features and target from the concatenated arrays
-            X_train = train_arr[:, :-1]
-            X_test = test_arr[:, :-1]
-            
-            
-            y_train = train_arr[:, -1]
-            y_test = test_arr[:, -1]
-    
+            # 1. Split features and target + Force float type
+            X_train, y_train = train_arr[:, :-1].astype(float), train_arr[:, -1].astype(float)
+            X_test, y_test = test_arr[:, :-1].astype(float), test_arr[:, -1].astype(float)
 
-            # 2. Start MLFlow run for Experiment Tracking
+            # 2. Start MLFlow run
             with mlflow.start_run():
-                params = {'colsample_bytree': 1.0,
-                'learning_rate': 0.01,
-                'max_depth': 3,
-                'n_estimators': 500,
-                'subsample': 0.7}
+                params = {
+                    'colsample_bytree': 1.0,
+                    'learning_rate': 0.01,
+                    'max_depth': 3,
+                    'n_estimators': 500,
+                    'subsample': 0.7
+                }
 
                 # 3. Initialize and fit the XGBoost Regressor
                 model = XGBRegressor(**params)
@@ -43,10 +45,10 @@ class ModelTrainer:
             
                 # 5. Log Parameters, Metrics and Model to MLflow
                 mlflow.log_params(params)
-                mlflow.log_metric("score", mae_score)
+                mlflow.log_metric("mae", mae_score)
                 mlflow.xgboost.log_model(model, "model")
 
-                # 6. Save model locally for Streamlit Cloud to load the model during app runtime
+                # 6. Save model locally for Streamlit Cloud
                 os.makedirs(os.path.dirname(self.model_path), exist_ok = True)
                 joblib.dump(model, self.model_path)
 
@@ -54,21 +56,16 @@ class ModelTrainer:
                 return mae_score
 
         except Exception as e:
-            # Provide clear feedback for debugging on Streamlit Cloud
-            print(f"Error occured during model training: {e}")
+            print(f"Error occurred during model training: {e}")
             raise e
 
 # --- Standalone Testing logic ---
 if __name__ == "__main__":
-    # Initialise components
-    ingestion =  DataIngestion()
-    train_path, test_path = ingestion.initiate_data_ingestion()
+    ingestion = DataIngestion()
+    train_p, test_p = ingestion.initiate_data_ingestion()
     
-    # Correctly unpack the return values
     transformation = DataTransformation()
-    train_arr, test_arr, _ = transformation.initiate_data_transformation(train_path, test_path)
+    train_array, test_array, _ = transformation.initiate_data_transformation(train_p, test_p)
 
-    # Train model
     trainer = ModelTrainer()
-    trainer.initiate_model_trainer(train_arr, test_arr)
-    
+    trainer.initiate_model_trainer(train_array, test_array)

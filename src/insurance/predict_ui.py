@@ -7,10 +7,10 @@ def run_insurance_ui():
 
     # st.cache_resource so the model doesnt reload when switching pages
     @st.cache_resource
-    def load_loan_pipeline():
+    def load_insurance_pipeline():
         return PredictPipeline()
 
-    pipeline = load_loan_pipeline()
+    pipeline = load_insurance_pipeline()
 
     # --- User Input Form ---
     with st.form("insurance_form"):
