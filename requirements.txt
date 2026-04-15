@@ -1,3 +1,6 @@
+# --- Setup Tools ---
+setuptools<82.0.0
+
 # --- Framework & Core ---
 streamlit
 python-dotenv
