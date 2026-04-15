@@ -4,7 +4,7 @@ python-dotenv
 pandas
 numpy
 joblib
-matpltlib
+matplotlib
 seaborn
 
 # --- Machine Learning (Insurance & Loan Projects) ---
