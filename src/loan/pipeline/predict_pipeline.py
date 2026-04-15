@@ -1,43 +1,35 @@
+import os
 import joblib
 import pandas as pd
-
-# Import custom logic for data paths and transformation steps
 from src.loan.components.data_transformation import DataTransformation
 from src.loan.components.model_trainer import ModelTrainer
 
-
 class PredictPipeline:
-    """ This class handles the end to end prediction process:
-    Loading artifacts, transforming input, and generating results.
-    """
     def __init__(self):
-        # Initializing paths from the component classes
-        self.model_path = ModelTrainer().model_path
-        self.preprocessor_path = DataTransformation().preprocessor_path
+        # Use absolute paths to ensure Streamlit Cloud finds the files
+        base_dir = os.getcwd() 
+        self.model_path = os.path.join(base_dir, "artifacts", "loan", "model.pkl")
+        self.preprocessor_path = os.path.join(base_dir, "artifacts", "loan", "preprocessor.pkl")
 
-        # Loading saved model and processor into memory
+        if not os.path.exists(self.model_path):
+            raise FileNotFoundError(f"Model not found at {self.model_path}. Did the CML Action run?")
+
         self.model = joblib.load(self.model_path)
         self.preprocessor = joblib.load(self.preprocessor_path)
 
     def predict(self, features):
-        """
-         Takes raw input features and returns a prediction.
-        """
-        
         scaled = self.preprocessor.transform(features)
         return self.model.predict(scaled)
 
 class CustomData:
-    """
-    Acts as a bridge between the User Interface and the Model.
-    Maps Individual Input into a format the model understands.
-    """
-
-    # Mapping Constructor arguments to dictionary
-    def __init__(self, Gender, Married, Education, Self_Employed, ApplicantIncome, CoapplicantIncome, LoanAmount, Loan_Amount_Term, Credit_History, Property_Area):
+    # ADD the arguments to match the training data schema
+    def __init__(self, Gender, Married, Dependents, Education, Self_Employed, 
+                 ApplicantIncome, CoapplicantIncome, LoanAmount, 
+                 Loan_Amount_Term, Credit_History, Property_Area):
         self.data = {
             "Gender": [Gender],
             "Married": [Married],
+            "Dependents": [Dependents], 
             "Education": [Education],
             "Self_Employed": [Self_Employed],
             "ApplicantIncome": [ApplicantIncome],
@@ -49,7 +41,4 @@ class CustomData:
         }
 
     def get_as_df(self):
-        """
-        Converts dictionary into pandas dataframe.
-        """
         return pd.DataFrame(self.data)

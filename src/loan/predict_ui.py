@@ -20,6 +20,8 @@ def run_loan_ui():
         with col1:
             gender = st.selectbox("Gender", ["Male", "Female"])
             married = st.selectbox("Married", ['Yes', 'No'])
+            # ADDED: Dependents input
+            dependents = st.selectbox("Dependents", ['0', '1', '2', '3+']) 
             education = st.selectbox("Education", ['Graduate', 'Not Graduate'])
             applicant_income = st.number_input("Applicant Income ($)", min_value=0.0, value=5000.0, step=100.0)
             loan_amount = st.number_input("Loan Amount ($k)", min_value=0.0, value=150.0, step=10.0)
@@ -40,10 +42,20 @@ def run_loan_ui():
     if submit:
         try:
             with st.spinner('Analyzing application...'):
-                # 1.  Map from inputs to the CustomData Bridge
-                data_obj = CustomData(Gender = gender, Married = married, Education = education, Self_Employed = self_employed,
-                ApplicantIncome = applicant_income, CoapplicantIncome = coapplicant_income, LoanAmount = loan_amount, Loan_Amount_Term = loan_amount_term, Credit_History = credit_history,
-                Property_Area = property_area)
+                
+                data_obj = CustomData(
+                    Gender=gender, 
+                    Married=married, 
+                    Dependents=dependents, # <--- Added this
+                    Education=education, 
+                    Self_Employed=self_employed,
+                    ApplicantIncome=applicant_income, 
+                    CoapplicantIncome=coapplicant_income, 
+                    LoanAmount=loan_amount, 
+                    Loan_Amount_Term=loan_amount_term, 
+                    Credit_History=credit_history,
+                    Property_Area=property_area
+                )
 
                 # 2. Convert dictionary to DataFrame for the preprocessor 
                 df = data_obj.get_as_df()

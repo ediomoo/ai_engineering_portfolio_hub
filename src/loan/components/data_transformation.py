@@ -58,8 +58,8 @@ class DataTransformation:
             X_train_arr = preprocessor.fit_transform(X_train)
             X_test_arr = preprocessor.transform(X_test)
 
-            train_arr = np.c_[X_train, np.array(y_train)]
-            test_arr = np.c_[X_test, np.array(y_test)]
+            train_arr = np.c_[X_train_arr, np.array(y_train)]
+            test_arr = np.c_[X_test_arr, np.array(y_test)]
 
             # 8. Save the preprocessor object for PredictPipeline to use
             os.makedirs(os.path.dirname(self.preprocessor_path), exist_ok = True)
@@ -76,6 +76,9 @@ class DataTransformation:
 
 # --- Standalone Testing logic ---
 if __name__ == '__main__':
-    obj = DataTransformation
-    obj.initiate_data_transformation(DataIngestion().initiate_data_ingestion())
+    ingestion = DataIngestion()
+    train_path, test_path = ingestion.initiate_data_ingestion()
+    transformation = DataTransformation()
+    transformation.initiate_data_transformation(train_path, test_path)
 
+    
