@@ -6,7 +6,7 @@ from dataclasses import dataclass
 @dataclass
 class DataIngestionConfig:
     """
-     Configuration for data ingestion paths.
+    Configuration for data ingestion paths.
     Using type hints (field: type) is required for dataclasses.
     """
 
