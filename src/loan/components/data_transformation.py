@@ -30,9 +30,14 @@ class DataTransformation:
             X_train = train_df.drop(columns = drop_columns, axis = 1)
             y_train = train_df[target_column].map({"Y": 1, "N": 0})
 
-
+            
             X_test = test_df.drop(columns = drop_columns, axis = 1)
             y_test = test_df[target_column].map({"Y": 1, "N": 0})
+
+            
+            # force 'Dependents' to be strings in both
+            X_train['Dependents'] = X_train['Dependents'].astype(str)
+            X_test['Dependents'] = X_test['Dependents'].astype(str)
 
 
             # 3. Identify numerical and categorical columns automatically
