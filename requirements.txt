@@ -25,6 +25,7 @@ tavily-python
 
 # --- Tracking & Logging ---
 mlflow
+protobuf==3.20.3
 
 # --- Local Package Install ---
 -e .
