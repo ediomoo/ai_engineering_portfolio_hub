@@ -60,7 +60,7 @@ A unified interactive dashboard showcasing end-to-end AI solutions, ranging from
 
 ⚙️ Installation & Setup
 
-1. Clone the Repository and change working directory: git clone https://github.com
+1. Clone the Repository and change working directory: git clone https://github.com/ediomoo/ai_engineering_portfolio_hub.git
 						    : cd ai-engineering-portfolio-hub
 2. Environment Configuration
 Local Development: Create a .env file in the root directory:
