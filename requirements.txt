@@ -1,0 +1,30 @@
+# --- Framework & Core ---
+streamlit
+python-dotenv
+pandas
+numpy
+joblib
+matpltlib
+seaborn
+
+# --- Machine Learning (Insurance & Loan Projects) ---
+scikit-learn
+xgboost
+
+# --- GenAI & RAG (PDF Investigator) ---
+langchain
+langchain-openai
+langchain-community
+pypdf
+faiss-cpu
+tiktoken
+
+# --- Agentic Systems (Market Analyst) ---
+langgraph
+tavily-python
+
+# --- Tracking & Logging ---
+mlflow
+
+# --- Local Package Install ---
+-e .
