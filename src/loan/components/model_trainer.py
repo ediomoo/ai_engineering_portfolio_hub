@@ -9,12 +9,15 @@ from src.loan.components.data_ingestion import DataIngestion
 
 class ModelTrainer:
     def __init__(self):
-        # Ensure this matches your Streamlit app's loading path exactly
         self.model_path = os.path.join("artifacts", "loan", "model.pkl")
         
-        # Set local MLflow tracking directory for GitHub Actions
-        os.makedirs("mlruns", exist_ok=True)
-        mlflow.set_tracking_uri(f"file://{os.path.abspath('mlruns')}")
+        # FIX: Use SQLite instead of the deprecated folder backend
+        # This prevents the "Could not find experiment with ID 0" error
+        db_path = os.path.abspath("mlflow.db")
+        mlflow.set_tracking_uri(f"sqlite:///{db_path}")
+        
+        # Set a specific experiment name to be safe
+        mlflow.set_experiment("Loan_Training")
 
     def initiate_model_trainer(self, train_arr, test_arr):
         """
