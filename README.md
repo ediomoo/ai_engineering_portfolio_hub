@@ -41,7 +41,6 @@ A unified interactive dashboard showcasing end-to-end AI solutions, ranging from
 
 ## 🏗️ Project Structure
 
-```text
 ├── artifacts/          # Saved models, preprocessors, and agent reports
 ├── data/               # Raw datasets (CSV/PDF)
 ├── notebooks/          # Jupyter notebooks for EDA and experimentation
@@ -57,11 +56,12 @@ A unified interactive dashboard showcasing end-to-end AI solutions, ranging from
 ├── setup.py            # Local package configuration
 └── requirements.txt    # Project dependencies
 	
+---
 
 ⚙️ Installation & Setup
-1. Clone the Repository and change working directory: git clone https://github.com
-						    : cd ai-portfolio-hub
 
+1. Clone the Repository and change working directory: git clone https://github.com
+						    : cd ai-engineering-portfolio-hub
 2. Environment Configuration
 Local Development: Create a .env file in the root directory:
 OPENAI_API_KEY=your_openai_api_key
