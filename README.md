@@ -2,7 +2,7 @@
 
 A unified interactive dashboard showcasing end-to-end AI solutions, ranging from classical machine learning (Regression/Classification) to state-of-the-art Generative AI (RAG) and Autonomous Agents.
 
-**🌐 Live Demo:** [Link to your Streamlit Cloud App]
+**🌐 Live Demo:** https://ai-engineering-portfolio-app.streamlit.app/
 
 ---
 
@@ -58,7 +58,7 @@ A unified interactive dashboard showcasing end-to-end AI solutions, ranging from
 	
 ---
 
-⚙️ Installation & Setup
+## ⚙️ Installation & Setup
 
 1. Clone the Repository and change working directory: git clone https://github.com/ediomoo/ai_engineering_portfolio_hub.git
 						    : cd ai-engineering-portfolio-hub
