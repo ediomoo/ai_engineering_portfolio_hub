@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 from src.loan.pipeline.predict_pipeline import CustomData, PredictPipeline
 
 def run_loan_ui():
