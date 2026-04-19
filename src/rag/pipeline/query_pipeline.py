@@ -1,8 +1,8 @@
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain.chains import create_retrieval_chain
-from langchain.chains import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
+from langchain.chains.retrieval.base import create_retrieval_chain
+from langchain.chains.combine_documents.base import create_stuff_documents_chain
 import os
 
 class QueryPipeline:
