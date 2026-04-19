@@ -87,7 +87,7 @@ def run_loan_ui():
         st.write("This report shows the statistical evidence used to build the model.")
         
         # Load the HTML file we converted in Step 1
-        with open("src/loan/notebooks/exploration.html", 'r', encoding='utf-8') as f:
+        with open("notebooks/loan/exploration.html", 'r', encoding='utf-8') as f:
             html_data = f.read()
         
         # Display the notebook as an embedded frame

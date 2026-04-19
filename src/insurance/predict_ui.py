@@ -77,7 +77,7 @@ def run_insurance_ui():
         st.write("This report shows the statistical evidence used to build the model.")
         
         # Load the HTML file we converted in Step 1
-        with open("src/insurance/notebooks/exploration.html", 'r', encoding='utf-8') as f:
+        with open("notebooks/insurance/exploration.html", 'r', encoding='utf-8') as f:
             html_data = f.read()
         
         # Display the notebook as an embedded frame
