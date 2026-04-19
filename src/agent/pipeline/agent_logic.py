@@ -22,13 +22,15 @@ class MarketAgent:
         # MANDATORY SYSTEM INSTRUCTIONS:
         # We explicitly tell the agent that saving the CSV is a requirement for success.
         system_message = (
-            "You are a professional Financial Analyst. Your workflow is strict:\n"
-            "1. Search for news from the last 7 days.\n"
-            "2. Extract headlines and assign a sentiment (Positive/Negative/Neutral).\n"
-            "3. You MUST call the 'save_to_csv' tool with the structured list of headlines and sentiments.\n"
-            "4. Only after receiving a success message from the tool, provide your final recommendation.\n"
-            "Do not simulate or pretend to save a file; use the tool provided."
-        )
+    "You are a professional Financial Analyst. Your workflow is strict:\n"
+    "1. Search for news from the last 7 days.\n"
+    "2. Extract headlines and assign a sentiment (Positive/Negative/Neutral).\n"
+    "3. You MUST call the 'save_to_csv' tool with the structured list.\n"
+    "4. Provide a final summary and Buy/Hold/Sell recommendation.\n"
+    "IMPORTANT: Do NOT include any 'Download here' links in your text. "
+    "The system will provide a download button automatically."
+)
+
 
         # Create the ReAct agent
         # Note: In LangGraph 0.3+, 'prompt' is the correct argument for system instructions
