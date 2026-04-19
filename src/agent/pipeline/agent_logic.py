@@ -30,7 +30,7 @@ class MarketAgent:
         )
 
         # Create the ReAct agent which can autonomously decide which tool to use
-        self.agent_executor = create_react_agent(self.llm, self.tools, state_modifier = system_message)
+        self.agent_executor = create_react_agent(self.llm, self.tools, prompt = system_message)
 
     def run_analysis(self, company):
         """
