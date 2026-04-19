@@ -1,3 +1,10 @@
+import streamlit as st
+import os 
+from src.rag.components.data_transformation import DataTransformation
+from src.rag.components.data_ingestion import DataIngestion
+from src.rag.components.vector_store import VectorStoreManager
+from src.rag.pipeline.query_pipeline import QueryPipeline
+
 def run_rag_ui():
     """
     Renders the UI for the PDF Investigator (RAG) project.
@@ -6,7 +13,7 @@ def run_rag_ui():
     st.header("🕵️‍♂️ PDF Investigator (RAG)")
     st.markdown("Chat with your document using context-aware AI.")
 
-    # --- Main Page: Document Management  ---
+    # --- Main Page: Document Management (Moved from Sidebar) ---
     # Using an expander makes it prominent but allows users to hide it after indexing
     with st.expander("📂 **Step 1: Upload and Index your Document**", expanded=True):
         col1, col2 = st.columns([3, 1])
