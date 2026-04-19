@@ -4,43 +4,39 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_core.tools import tool
 
 @tool
-def save_to_csv(data_list: list, filename: str = "market_report.csv"):
+def save_to_csv(data_list: list):
     """
-    Saves a list of dictionaries (e.g., [{'headline': '...', 'sentiment': '...'}]) into a CSV file.
+    Saves a list of dictionaries into a CSV file. 
+    Example input: [{'Date': '2024-01-01', 'Headline': '...', 'Sentiment': 'Positive'}]
     
-    Use this tool ONLY when you have collected structured data points that need 
-    to be available for download.
+    Use this tool IMMEDIATELY after gathering news and analyzing sentiment.
+    The file will be stored at 'artifacts/agent/market_report.csv'.
     """
     try:
-        # Ensure we are working with a list of data
+        # 1. Validation: Ensure we have a list of dictionaries
         if not data_list or not isinstance(data_list, list):
-            return "Error: Data must be a non-empty list of dictionaries."
+            return "Error: Data must be a list of dictionaries."
 
-        # Create the directory path for agent artifacts if it doesn't exist
-        # 'exist_ok=True' prevents errors if the folder already exists
+        # 2. Path Setup: Hardcode the path to ensure UI and Agent stay synced
         target_dir = os.path.join("artifacts", "agent")
         os.makedirs(target_dir, exist_ok=True)
+        file_path = os.path.join(target_dir, "market_report.csv")
 
-        # Construct the full file path
-        file_path = os.path.join(target_dir, filename)
-
-        # Use pandas to handle potential formatting issues automatically
+        # 3. Save Logic
         df = pd.DataFrame(data_list)
         df.to_csv(file_path, index=False)
 
-        # Return a clear success message so the agent knows the task is done
-        return f"Successfully saved {len(data_list)} rows to {file_path}"
+        # 4. Confirmation: Clear feedback to the Agent
+        return f"SUCCESS: Saved {len(data_list)} news items to {file_path}. Tell the user the CSV is ready for download."
     
     except Exception as e:
-        return f"Failed to save CSV: {str(e)}"
+        return f"CRITICAL ERROR: Failed to save CSV: {str(e)}"
 
 def get_tools():
     """
-    Initializes and returns the suite of tools available to the agent.
+    Initializes and returns the tools.
     """
-    # Initialize Tavily search with a limit of 5 results for concise context
-    # Note: Ensure TAVILY_API_KEY is in your environment variables
-    search_tool = TavilySearchResults(k=5)
+    # Increased k to 7 to give the agent more data to analyze sentiment
+    search_tool = TavilySearchResults(k=7)
     
-    # Corrected: Fixed the indentation of the return statement
     return [search_tool, save_to_csv]
